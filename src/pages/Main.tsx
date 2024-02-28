@@ -5,8 +5,26 @@ import { Jobs } from "./Jobs";
 import { PageNotFound } from "./PageNotFound";
 import { Home } from "./Home";
 import { CreateJob } from "../components/Job/CreateJob";
+import { ThemeContextProvider, useTheme } from "../context/ThemeContextProvider";
+import { useEffect, useState } from "react";
 export function Main() {
+
+    const [themeMode, setThemeMode] = useState('light');
+
+    const setTheme = function (value: any) {
+        setThemeMode(value);
+    }
+
+    useEffect(() => {
+        let val = 0;
+        setInterval(() => {
+            val += 1;
+            setTheme('light' + val);
+        }, 1000)
+    }, [])
+    
     return <>
+    <ThemeContextProvider value={{themeMode, setTheme}}>
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Layout />}>
@@ -18,5 +36,6 @@ export function Main() {
                 </Route>
             </Routes>
         </BrowserRouter>
+        </ThemeContextProvider>
     </>
 }

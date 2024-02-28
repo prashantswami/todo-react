@@ -4,6 +4,23 @@ import { IJob } from "../../components/Job/IJob";
 import { JobActionTypes } from "../store/store";
 
 
+export async function getJobsAsync() {
+    const response = await apiClient.request<{ jobs: IJob[] }>(gql`
+                    query {
+                        jobs {
+                            _id
+                            title
+                            description
+                            company {
+                                companyName
+                            }
+                        }
+                    }
+                `);
+    return response;
+}
+
+
 export function getJobs() {
     return async function (dispatch: any) {
         dispatch({ type: JobActionTypes.GET_JOBS_REQUEST });
@@ -52,9 +69,9 @@ export function createJob(job: IJob) {
                 }
             });
 
-            dispatch({type: JobActionTypes.CREATE_JOB_SUCCESS, payload: response})
+            dispatch({ type: JobActionTypes.CREATE_JOB_SUCCESS, payload: response })
         } catch (error) {
-            dispatch({type: JobActionTypes.CREATE_JOB_FAILURE});
+            dispatch({ type: JobActionTypes.CREATE_JOB_FAILURE });
         }
     }
 }
