@@ -1,9 +1,8 @@
 import { useEffect, useRef } from "react";
-import {getJobs} from '../lib/graphql/jobApi'
 import { Job } from "../components/Job/Job";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../lib/store/store";
-import { useAppDispatch, useAppSelector } from './../lib/store/store'
+import { getJobsAyncThunk, useAppDispatch, useAppSelector } from './../lib/store/storeKit'
 
 
 export function Jobs() {
@@ -11,8 +10,8 @@ export function Jobs() {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const jobs = useAppSelector((state: RootState) => state?.jobs);
-    const loading = useAppSelector((state: RootState) => state?.loading);
+    const jobs = useAppSelector((state: RootState) => state.jobs);
+    const loading = useAppSelector((state: RootState) => state.loading);
 
     useEffect(() => {
         if(!isLoaded.current) {
@@ -20,7 +19,7 @@ export function Jobs() {
             return;
         }
 
-        dispatch(getJobs());
+        dispatch(getJobsAyncThunk());
 
     }, [dispatch]);
 
